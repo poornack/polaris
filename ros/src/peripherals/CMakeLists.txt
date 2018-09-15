@@ -74,5 +74,9 @@ add_executable(hydrophones src/hydrophones.cpp)
 target_link_libraries(hydrophones ${catkin_LIBRARIES} ${serial_LIBRARIES})
 add_dependencies(hydrophones monitor_generate_messages_cpp peripherals_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
+add_executable(weight_dropper_torpedo src/weight_dropper_torpedo.cpp)
+target_link_libraries(weight_dropper_torpedo ${catkin_LIBRARIES} ${serial_LIBRARIES})
+add_dependencies(weight_dropper_torpedo monitor_generate_messages_cpp peripherals_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+
 #add_executable(exec_name src/file.cpp)
 #target_link_libraries(exec_name -lfftw3)

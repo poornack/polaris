@@ -16,20 +16,31 @@
 
 device_manager::device_manager(const std::vector<device_property> & properties) {
     std::vector<serial::PortInfo> ports = serial::list_ports();
+
+    ports.push_back("ttyACM0");
     for (auto property = properties.begin(); property != properties.end(); ++property) {
+
+        
 
 	if(property->ignore) {
             continue;
 	}
-
+        
+        ROS_ERROR("Checking property %s", property->name.c_str());
+        
         for(auto port = ports.begin(); port != ports.end();) {
-            
-            std::string prefix("/dev/ttyUSB");
-            if(!std::equal(prefix.begin(), prefix.end(), port->port.begin())) {
+
+            ROS_ERROR("Checking port %s", port->port.c_str());
+
+            std::string prefix_USB("/dev/ttyUSB");
+            std::string prefix_ACM("/dev/ttyACM");
+            if(!std::equal(prefix_USB.begin(), prefix_USB.end(), port->port.begin()) ||  !std::equal(prefix_ACM.begin(), prefix_ACM.end(), port->port.begin())) {
                 port = ports.erase(port); //iterator takes next position in list
                 continue;
             }
             
+            
+
             std::unique_ptr<serial::Serial> connection = std::unique_ptr<serial::Serial>(
                 new serial::Serial(port->port, (uint32_t) property->baud, property->timeout));
             
@@ -165,6 +176,8 @@ int main(int argc, char ** argv) {
     nh.getParam("devices_json_location", json_file_location);
     std::vector<device_property> json_properties;
     parse_json(json_properties, json_file_location);
+
+    ROS_ERROR("Starting serial manager");
 
     device_manager m(json_properties);
     ros::ServiceServer getDevice = nh.advertiseService("GetDevicePort", &device_manager::get_device_by_name, &m);

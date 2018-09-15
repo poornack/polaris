@@ -1,0 +1,9 @@
+<launch>
+    <arg name="device_id" default="Weight_Dropper_Torpedo_1.0"/>
+    <arg name="loop_rate" default="10"/>
+
+    <node name="weight_dropper_torpedo" pkg="peripherals" type="weight_dropper_torpedo" respawn="true" respawn_delay="1">
+        <param name="device_id" value="$(arg device_id)"/>
+        <param name="loop_rate" value="$(arg loop_rate)"/>
+    </node>
+</launch>
