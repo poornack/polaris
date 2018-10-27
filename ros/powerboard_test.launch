@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find webgui)/webgui.launch"/>
+   	<include file="$(find monitor)/launchfiles/serial.launch"/>
+	<include file="$(find peripherals)/launchfiles/power_board.launch"/>
+</launch>
